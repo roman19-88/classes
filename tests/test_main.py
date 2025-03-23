@@ -1,66 +1,54 @@
-import unittest
+import pytest
 
 from src.main import Category, Product
 
 
-def test_product_initialization():
-    """Проверка инициализации объекта Product"""
-    product = Product("Товар 1", "Описание товара 1", 10.99, 5)
-    assert product.name == "Товар 1"
-    assert product.description == "Описание товара 1"
-    assert product.price == 10.99
-    assert product.quantity == 5
+@pytest.fixture
+def setup_products():
+    """Fixture для создания тестовых продуктов и категории."""
+    banana = Product('Banana', 'Fresh bananas', 10.0, 50)
+    apple = Product('Apple', 'Juicy apples', 5.0, 30)
+    fruits_category = Category('Fruits', 'Mixed fruits', [banana])
+    return banana, apple, fruits_category
 
 
-def test_product_with_string_quantity():
-    """Проверка инициализации объекта Product с количествo как строка"""
-    product = Product("Товар 2", "Описание товара 2", 15.50, "10")
-    assert product.quantity == "10"
+def test_product_initialization(setup_products):
+    """Тест на инициализацию класса Product."""
+    banana, apple, _ = setup_products
+    assert banana.name == 'Banana'
+    assert banana.description == 'Fresh bananas'
+    assert banana.get_price == 10.0
+    assert banana.quantity == 50
 
 
-def test_category_initialization():
-    """Проверка инициализации объекта Category"""
-    product1 = Product("Товар 1", "Описание товара 1", 10.99, 5)
-    product2 = Product("Товар 2", "Описание товара 2", 15.50, "10")
-    category = Category("Категория 1", "Описание категории 1", [product1, product2])
-
-    assert category.name == "Категория 1"
-    assert category.description == "Описание категории 1"
-    assert len(category.products) == 2
-    assert product1 in category.products
-    assert product2 in category.products
+def test_product_price_update(setup_products):
+    """Тест на обновление цены продукта."""
+    banana, _, _ = setup_products
+    banana.get_price = 12.0
+    assert banana.get_price == 12.0
 
 
-def reset_category_and_product_counts():
-    """ Сброс значений счетчиков категорий и продуктов """
-    Category.category_count = 0
-    Category.product_count = 0
+def test_product_price_should_not_be_negative(capfd, setup_products):
+    """Тест, чтобы убедиться, что цена не может быть отрицательной."""
+    banana, _, _ = setup_products
+    banana.get_price = -5  # Это вызовет сообщение
+    captured = capfd.readouterr()  # Захватываем вывод
+    assert "Цена не должна быть нулевая или отрицательная" in captured.out
 
 
-def test_static_category_count():
-    """ Проверка счетчика категорий """
+def test_add_product_to_category(setup_products):
+    """Тест добавления продукта в категорию."""
+    banana, apple, fruits_category = setup_products
+    fruits_category.add_product(apple)
 
-    reset_category_and_product_counts()  # Сбрасываем счетчики перед тестом
-    product1 = Product("Товар 1", "Описание товара 1", 10.99, 5)
-    product2 = Product("Товар 2", "Описание товара 2", 15.50, "10")
-    category = Category("Категория 1", "Описание категории 1", [product1, product2])
-
-    assert Category.category_count == 1
-
-
-def test_static_product_count():
-    """ Проверка счетчика продуктов """
-    reset_category_and_product_counts()
-    product1 = Product("Товар 1", "Описание товара 1", 10.99, 5)
-    new_category = Category("Категория 1", "Описание категории 1", [product1])
-
-    assert Category.product_count == 1  # Должно быть 1 после создания первой категории с продуктом
-
-    new_product = Product("Товар 2", "Описание товара 2", 15.50, 3)
-    new_category_2 = Category("Категория 2", "Описание категории 2", [new_product])
-
-    assert Category.product_count == 2  # Должно быть 2 после создания второй категории с продуктами
+    # Проверяем, что продукты добавлены
+    assert len(fruits_category.products) == 2
+    assert fruits_category.products[0] == 'Banana, 10.0 руб. Остаток: 50 шт.'
+    assert fruits_category.products[1] == 'Apple, 5.0 руб. Остаток: 30 шт.'
 
 
-if __name__ == "__main__":
-    unittest.main()
+def test_category_product_count(setup_products):
+    """Тест на количество продуктов в категории."""
+    banana, apple, fruits_category = setup_products
+    fruits_category.add_product(apple)
+    assert Category.product_count == 1
