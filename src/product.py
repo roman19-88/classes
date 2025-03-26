@@ -20,14 +20,14 @@ class Product:
     @price.setter
     def price(self, new_price):
         if new_price <= 0:
-            print('Цена не должна быть нулевая или отрицательная')
+            print("Цена не должна быть нулевая или отрицательная")
         else:
             self.__price = new_price
 
     @classmethod
     def new_product(cls, product_info):
-        name = product_info.get('name')
-        price = product_info.get('price')
-        description = product_info.get('description')
-        quantity = product_info.get('quantity')
+        name = product_info.get("name")
+        price = product_info.get("price")
+        description = product_info.get("description")
+        quantity = product_info.get("quantity")
         return cls(name, description, price, quantity)
