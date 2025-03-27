@@ -1,4 +1,5 @@
 from src.product import Product
+import pytest
 
 
 def test_product_initialization():
@@ -39,3 +40,24 @@ def test_new_product_class_method():
     assert product.description == "Мощный ноутбук для работы"
     assert product.price == 50000
     assert product.quantity == 5
+
+
+@pytest.fixture
+def product1():
+    return Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
+
+
+@pytest.fixture
+def product2():
+    return Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)
+
+
+def test_add_method(product1, product2):
+    # Ожидаемая стоимость: (210000.0 * 8) + (31000.0 * 14)
+    expected_total_price = (210000.0 * 8) + (31000.0 * 14)
+    assert product1 + product2 == expected_total_price
+
+
+def test_str_method(product1):
+    expected_str = 'Iphone 15, 210000.0 руб. Остаток: 8 шт.'
+    assert str(product1) == expected_str
