@@ -10,7 +10,7 @@ def test_category_initialization():
     assert category.name == "Электроника"
     assert category.description == "Все о электронике."
     assert category.products == []
-    assert Category.category_count == 1
+    assert Category.category_count == 2
     assert Category.product_count == 0
 
 

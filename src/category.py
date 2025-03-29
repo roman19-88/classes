@@ -27,3 +27,6 @@ class Category:
         if isinstance(product, Product):
             self.__products.append(product)
             Category.product_count += 1
+obj = Product('apple', 'fruit', 17, 1324)
+obj2 = Category('fruits', 'just fruits', [obj])
+print(obj2)

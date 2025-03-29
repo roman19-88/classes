@@ -59,9 +59,3 @@ class LawnGrass(Product):
 
 
 
-# print(smartphone)
-#
-# lawn_grass = LawnGrass(name="Premium Lawn Grass", description='phonr', quantity=8,price=50, country="USA",
-#                         germination_period="7-14 days", color="Green")
-# print(lawn_grass)
-
