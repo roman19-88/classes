@@ -1,5 +1,5 @@
 from typing import Union
-
+from src.product import Product
 
 class Category:
     name: str
@@ -24,5 +24,6 @@ class Category:
         return [f"{el.name}, {el.price} руб. Остаток: {el.quantity} шт." for el in self.__products]
 
     def add_product(self, product):
-        self.__products.append(product)
-        Category.product_count += 1
+        if isinstance(product, Product):
+            self.__products.append(product)
+            Category.product_count += 1
