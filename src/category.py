@@ -1,10 +1,11 @@
 from typing import Union
-from src.product import Product
+
+from .product import Product
+
 
 class Category:
     name: str
     description: str
-    products: Union[list, None]
     category_count = 0
     product_count = 0
 
@@ -17,16 +18,20 @@ class Category:
 
     def __str__(self):
         total_quantity = sum([x.quantity for x in self.__products])
-        return f'{self.name}, количество продуктов: {total_quantity} шт.'
+        return f"{self.name}, количество продуктов: {total_quantity} шт."
 
     @property
     def products(self):
-        return [f"{el.name}, {el.price} руб. Остаток: {el.quantity} шт." for el in self.__products]
+        return [
+            f"{el.name}, {el.price} руб. Остаток: {el.quantity} шт."
+            for el in self.__products
+        ]
 
     def add_product(self, product):
         if isinstance(product, Product):
             self.__products.append(product)
             Category.product_count += 1
-obj = Product('apple', 'fruit', 17, 1324)
-obj2 = Category('fruits', 'just fruits', [obj])
-print(obj2)
+        else:
+            raise TypeError("Можно добавлять только объекты класса Product или его наследников")
+
+

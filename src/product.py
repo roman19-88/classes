@@ -1,10 +1,26 @@
+from abc import ABC, abstractmethod
 from typing import Union
 
 
-class Product:
+class BaseProduct(ABC):
+
+    @property
+    @abstractmethod
+    def price(self):
+        pass
+
+
+
+
+class Mixin(BaseProduct):
+    def __init__(self, *args) -> None:
+        print(self.__class__.__name__, args)
+        super().__init__(*args)
+
+
+class Product(Mixin, BaseProduct):
     name: str
     description: str
-    price: Union[float,  int]
     quantity: Union[int, str]
 
     def __init__(self, name, description, price, quantity):
@@ -14,7 +30,7 @@ class Product:
         self.quantity = quantity
 
     def __str__(self):
-        return f'{self.name}, {self.__price} руб. Остаток: {self.quantity} шт.'
+        return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
 
     @property
     def price(self):
@@ -23,15 +39,14 @@ class Product:
     @price.setter
     def price(self, new_price):
         if new_price <= 0:
-            print('Цена не должна быть нулевая или отрицательная')
+            print("Цена не должна быть нулевая или отрицательная")
         else:
             self.__price = new_price
 
     def __add__(self, other):
-        if isinstance(other, Product) and type(self)==type(other):
-            return (self.__price * self.quantity) + (other.__price * other.quantity)
-        else:
-            raise TypeError
+        if type(self) is not type(other):
+            raise TypeError("Можно складывать только объекты одного класса")
+        return (self.__price * self.quantity) + (other.__price * other.quantity)
 
     @classmethod
     def new_product(cls, product_info):
@@ -43,19 +58,21 @@ class Product:
 
 
 class Smartphone(Product):
-    def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
+    def __init__(
+        self, name, description, price, quantity, efficiency, model, memory, color
+    ):
         super().__init__(name, description, price, quantity)
         self.efficiency = efficiency
         self.model = model
         self.memory = memory
         self.color = color
 
+
 class LawnGrass(Product):
-    def __init__(self, name, description, price, quantity, country, germination_period, color):
+    def __init__(
+        self, name, description, price, quantity, country, germination_period, color
+    ):
         super().__init__(name, description, price, quantity)
         self.country = country
         self.germination_period = germination_period
         self.color = color
-
-
-
