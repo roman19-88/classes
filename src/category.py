@@ -34,7 +34,7 @@ class Category:
         else:
             raise TypeError("Можно добавлять только объекты класса Product или его наследников")
 
-    def average_price(self):
+    def middle_price(self):
         try:
             if len(self.__products) == 0:
                 return 0
