@@ -67,3 +67,23 @@ def test_str_method(category):
     # Ожидаемая строка: название категории и общее количество продуктов
     expected_str = "Смартфоны, количество продуктов: 22 шт."  # 8 (Iphone) + 14 (Xiaomi)
     assert str(category) == expected_str
+
+
+def test_average_price_with_products(category):
+    """Тест проверяет корректный расчет среднего ценника для категории с товарами"""
+    # Средняя цена: (210000.0 + 31000.0) / 2 = 120500.0
+    expected_average = (210000.0 + 31000.0) / 2
+    assert category.average_price() == expected_average
+
+
+def test_average_price_empty_category():
+    """Тест проверяет, что для пустой категории возвращается 0"""
+    empty_category = Category("Пустая категория", "Категория без товаров", [])
+    assert empty_category.average_price() == 0
+
+
+def test_average_price_single_product():
+    """Тест проверяет расчет среднего ценника для категории с одним товаром"""
+    product = Product("Телефон", "Смартфон", 50000, 1)
+    category = Category("Электроника", "Категория с одним товаром", [product])
+    assert category.average_price() == 50000

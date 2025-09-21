@@ -22,6 +22,10 @@ black = "^25.1.0"
 isort = "^6.0.1"
 mypy = "^1.15.0"
 
+
+[tool.poetry.group.dev.dependencies]
+pytest-cov = "^7.0.0"
+
 [tool.poetry]
 packages = [{ include = "src" }]
 name = "classcomputer22222"

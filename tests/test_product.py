@@ -61,3 +61,9 @@ def test_add_method(product1, product2):
 def test_str_method(product1):
     expected_str = 'Iphone 15, 210000.0 руб. Остаток: 8 шт.'
     assert str(product1) == expected_str
+
+
+def test_zero_quantity_raises_value_error():
+    """Тест проверяет, что создание товара с нулевым количеством вызывает ValueError"""
+    with pytest.raises(ValueError, match="Товар с нулевым количеством не может быть добавлен"):
+        Product("Телефон", "Смартфон с хорошей камерой", 20000, 0)
