@@ -3,19 +3,20 @@ from typing import Union
 
 
 class BaseProduct(ABC):
-
     @property
     @abstractmethod
     def price(self):
         pass
 
+    @classmethod
+    @abstractmethod
+    def new_product(cls, product_info):
+        pass
 
 
-
-class Mixin(BaseProduct):
+class Mixin:
     def __init__(self, *args) -> None:
         print(self.__class__.__name__, args)
-        super().__init__(*args)
 
 
 class Product(Mixin, BaseProduct):
@@ -28,6 +29,7 @@ class Product(Mixin, BaseProduct):
         self.description = description
         self.__price = price
         self.quantity = quantity
+    super().__init__(name, description, price, quantity)
 
     def __str__(self):
         return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
