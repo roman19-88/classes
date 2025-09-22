@@ -36,8 +36,6 @@ class Category:
 
     def middle_price(self):
         try:
-            if len(self.__products) == 0:
-                return 0
             total_price = sum(product.price for product in self.__products)
             return total_price / len(self.__products)
         except ZeroDivisionError:
