@@ -35,3 +35,22 @@ print(f"Категорий: {Category.category_count}, Продуктов: {Cate
 
 Запустите тесты с помощью
 unittest
+# Продукты магазина
+
+## Классы
+
+### Smartphone
+Наследуется от Product.
+- Атрибуты:
+- efficiency: Производительность.
+- model: Модель.
+- memory: Объем памяти.
+- color: Цвет.
+
+### LawnGrass
+Наследуется от Product.
+- Атрибуты:
+- country: Страна-производитель.
+- germination_period: Срок прорастания.
+- color: Цвет.
+``
