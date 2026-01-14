@@ -1,5 +1,6 @@
 from src.category import Category
 from src.product import Product
+import pytest
 
 
 # Тесты для класса Category
@@ -44,3 +45,25 @@ def test_products_property():
         "Ноутбук, 50000 руб. Остаток: 5 шт.",
     ]
     assert category.products == expected_output
+
+
+@pytest.fixture
+def product1():
+    return Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
+
+
+@pytest.fixture
+def product2():
+    return Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)
+
+
+@pytest.fixture
+def category(product1, product2):
+    # Создаем категорию с двумя продуктами
+    return Category("Смартфоны", "Мобильные телефоны", [product1, product2])
+
+
+def test_str_method(category):
+    # Ожидаемая строка: название категории и общее количество продуктов
+    expected_str = "Смартфоны, количество продуктов: 22 шт."  # 8 (Iphone) + 14 (Xiaomi)
+    assert str(category) == expected_str
